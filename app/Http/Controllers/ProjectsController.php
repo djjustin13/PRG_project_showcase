@@ -73,7 +73,9 @@ class ProjectsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $project = Project::find($id);
+
+        return view('projects.edit')->with('project', $project);
     }
 
     /**
@@ -85,7 +87,20 @@ class ProjectsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required',
+            'text' => 'required'
+        ]);
+
+        //Create post
+
+        $project = Project::find($id);
+
+        $project->title = $request->input('title');
+        $project->text = $request->input('text');
+        $project->save();
+
+        return redirect('/projects')->with('succes', 'Project geupdate!');
     }
 
     /**

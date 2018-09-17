@@ -8,4 +8,6 @@
         {!! $project->text !!}
     </div>
     <small>Geplaats op {{$project->created_at}}</small>
+    <hr>
+    <a href="/projects/{{$project->id}}/edit" class="btn btn-outline-dark">Edit</a>
 @endsection
