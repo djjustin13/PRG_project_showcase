@@ -14,7 +14,8 @@
                 {{Form::label('text', 'Text')}}
                 {{Form::textarea('text', '', ['id' => 'article-ckeditor','class' => 'form-control', 'placeholder' => 'text'])}}
             </div>
-        {{Form::submit('Submit', ['class' => 'btn btn-primary'])}}
+        @csrf
+        {{Form::submit('Voeg project toe', ['class' => 'btn btn-primary'])}}
         {!! Form::close() !!}
     </div>
 @endsection

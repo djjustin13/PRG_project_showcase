@@ -14,7 +14,8 @@
                 {{Form::label('text', 'Text')}}
                 {{Form::textarea('text', $project->text, ['id' => 'article-ckeditor','class' => 'form-control', 'placeholder' => 'text'])}}
             </div>
-        {{Form::hidden('_method', 'PUT')}}
+        @method('PUT')
+        @csrf
         {{Form::submit('Submit', ['class' => 'btn btn-primary'])}}
         {!! Form::close() !!}
     </div>

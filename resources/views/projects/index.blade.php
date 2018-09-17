@@ -10,7 +10,7 @@
             <div class="card col-md-12">
                 <div class="card-body">
                     <e}><a href="/projects/{{$project->id}}">{{$project->title}}</a></h3>
-                    <small>Geplaatst op {{$project->created_at}}</small>
+                    <small>Geplaatst op {{$project->created_at}} door {{$project->user->name}}</small>
                 </div>
             </div>
             @endforeach

@@ -7,7 +7,12 @@
     <div>
         {!! $project->text !!}
     </div>
-    <small>Geplaats op {{$project->created_at}}</small>
+    <small>Geplaats op {{$project->created_at}} door {{$project->user->name}}</small>
     <hr>
-    <a href="/projects/{{$project->id}}/edit" class="btn btn-outline-dark">Edit</a>
+    <a href="/projects/{{$project->id}}/edit" class="btn btn-outline-dark">Bewerk</a>
+    {!! Form::open(['action' => ['ProjectsController@destroy', $project->id], 'method' => 'POST']) !!}
+        @method('DELETE')
+        @csrf
+        {{Form::submit('Verwijder', ['class' => 'btn btn-danger'])}}
+    {!! Form::close() !!}
 @endsection

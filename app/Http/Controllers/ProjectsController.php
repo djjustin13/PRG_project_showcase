@@ -47,6 +47,7 @@ class ProjectsController extends Controller
 
         $project->title = $request->input('title');
         $project->text = $request->input('text');
+        $project->user_id = auth()->user()->id;
         $project->save();
 
         return redirect('/projects')->with('succes', 'Project aangemaakt!');
@@ -111,6 +112,7 @@ class ProjectsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Project::destroy($id);
+        return redirect('/projects')->with('succes', 'Project verwijderd!');
     }
 }
