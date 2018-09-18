@@ -5,7 +5,7 @@
         <h1>Create project</h1>
     </div>
     <div class="row">
-        {!! Form::open(['action' => 'ProjectsController@store', 'method' => 'POST', 'enctype' => 'multipart/data']) !!}
+        {!! Form::open(['action' => 'ProjectsController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
             <div class="form-group">
                 {{Form::label('title', 'Title')}}
                 {{Form::text('title', '', ['class' => 'form-control', 'placeholder' => 'title'])}}
