@@ -86,6 +86,11 @@ class ProjectsController extends Controller
     {
         $project = Project::find($id);
 
+        //Check for correct user
+        if(auth()->user()->id !== $project->user_id){
+            return redirect('/projects')->with('error', 'Geen toegang tot deze pagina');
+        }
+
         return view('projects.edit')->with('project', $project);
     }
 
@@ -122,6 +127,11 @@ class ProjectsController extends Controller
      */
     public function destroy($id)
     {
+//        //Check for correct user
+//        if(auth()->user()->id !== $project->user_id){
+//            return redirect('/projects')->with('error', 'Geen toegang tot deze pagina');
+//        }
+
         Project::destroy($id);
         return redirect('/projects')->with('succes', 'Project verwijderd!');
     }
