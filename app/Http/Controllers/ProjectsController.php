@@ -48,8 +48,26 @@ class ProjectsController extends Controller
     {
         $this->validate($request, [
             'title' => 'required',
-            'text' => 'required'
+            'text' => 'required',
+            'cover_image' => 'image|nullable|max:1999'
         ]);
+
+        //Handle file upload
+        if($request->hasFile('cover_image')){
+            //Get filename with extension
+            $filenameWithExt = $request->file('cover_image')->getClientOriginalImage();
+            //Get just filename
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            //Get just extension
+            $extension = $request->file('cover_image')->getClientOriginalExtension();
+            //Filename to store
+            $fileNameToStore = $filename.'_'.time().'.'.$extension;
+
+            //Upload image
+            $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
+        }else{
+            $fileNameToStore = 'noimage.jpg';
+        }
 
         //Create post
 
@@ -58,6 +76,7 @@ class ProjectsController extends Controller
         $project->title = $request->input('title');
         $project->text = $request->input('text');
         $project->user_id = auth()->user()->id;
+        $project->cover_image = $fileNameToStore;
         $project->save();
 
         return redirect('/projects')->with('succes', 'Project aangemaakt!');
