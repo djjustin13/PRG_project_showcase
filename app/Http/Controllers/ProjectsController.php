@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Project;
 
 class ProjectsController extends Controller
@@ -127,12 +128,30 @@ class ProjectsController extends Controller
             'text' => 'required'
         ]);
 
-        //Create post
-
         $project = Project::find($id);
+
+        //Handle file upload
+        if($request->hasFile('cover_image')){
+            //Delete old file
+            Storage::delete('public/cover_images/' . $project->cover_image);
+            //Get filename with extension
+            $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+            //Get just filename
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            //Get just extension
+            $extension = $request->file('cover_image')->getClientOriginalExtension();
+            //Filename to store
+            $fileNameToStore = $filename.'_'.time().'.'.$extension;
+
+            //Upload image
+            $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
+        }
 
         $project->title = $request->input('title');
         $project->text = $request->input('text');
+        if($request->hasFile('cover_image')){
+            $project->cover_image = $fileNameToStore;
+        }
         $project->save();
 
         return redirect('/projects')->with('succes', 'Project geupdate!');
@@ -146,12 +165,21 @@ class ProjectsController extends Controller
      */
     public function destroy($id)
     {
-//        //Check for correct user
-//        if(auth()->user()->id !== $project->user_id){
-//            return redirect('/projects')->with('error', 'Geen toegang tot deze pagina');
-//        }
+        $project = Project::find($id);
+        //Check for correct user
+        if(auth()->user()->id !== $project->user_id){
+            return redirect('/projects')->with('error', 'Geen toegang tot deze pagina');
+        }
 
-        Project::destroy($id);
+        if($project->cover_image != 'noimage.jpg'){
+            //Delete image
+            Storage::delete('public/cover_images/'.$project->cover_image);
+        }
+
+        $project->delete();
+
+        //Cleaner way
+//        Project::destroy($id);
         return redirect('/projects')->with('succes', 'Project verwijderd!');
     }
 }

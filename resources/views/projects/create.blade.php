@@ -14,9 +14,15 @@
                 {{Form::label('text', 'Text')}}
                 {{Form::textarea('text', '', ['id' => 'article-ckeditor','class' => 'form-control', 'placeholder' => 'text'])}}
             </div>
-            <div class="form-group">
-                {{Form::file('cover_image')}}
+            <div class="input-group form-group">
+                <label class="input-group-btn">
+                        <span class="btn btn-secondary btn-file">
+                            Upload afbeelding {{Form::file('cover_image')}}
+                        </span>
+                </label>
+                <input type="text" class="form-control" readonly>
             </div>
+
         @csrf
         {{Form::submit('Voeg project toe', ['class' => 'btn btn-primary'])}}
         {!! Form::close() !!}
