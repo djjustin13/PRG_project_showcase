@@ -5,7 +5,7 @@
         <h1>Create project</h1>
     </div>
     <div class="row">
-        {!! Form::open(['action' => 'ProjectsController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+        {!! Form::open(['action' => 'ProjectsController@store', 'method' => 'POST', 'files'=> true]) !!}
             <div class="form-group">
                 {{Form::label('title', 'Title')}}
                 {{Form::text('title', '', ['class' => 'form-control', 'placeholder' => 'title'])}}
@@ -17,7 +17,7 @@
             <div class="input-group form-group">
                 <label class="input-group-btn">
                         <span class="btn btn-secondary btn-file">
-                            Upload afbeelding {{Form::file('cover_image')}}
+                            Upload afbeelding {{Form::file('images[]', ['multiple'=> true])}}
                         </span>
                 </label>
                 <input type="text" class="form-control" readonly>

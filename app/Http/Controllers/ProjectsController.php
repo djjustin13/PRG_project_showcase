@@ -55,20 +55,25 @@ class ProjectsController extends Controller
         ]);
 
         //Handle file upload
-        if($request->hasFile('cover_image')){
-            //Get filesize
-            $fileSize = $request->file('cover_image')->getSize();
-            //Get filename with extension
-            $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
-            //Get just filename
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            //Get just extension
-            $extension = $request->file('cover_image')->getClientOriginalExtension();
-            //Filename to store
-            $fileNameToStore = $filename.'_'.time().'.'.$extension;
+        if($request->hasFile('images')){
+            $files = $request->file('images');
+            foreach ($files as $file){
+                //Get filesize
+                $fileSize = $file->getSize();
+                //Get filename with extension
+                $filenameWithExt = $file->getClientOriginalName();
+                //Get just filename
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                //Get just extension
+                $extension = $file->getClientOriginalExtension();
+                //Filename to store
+                $fileNameToStore = $filename.'_'.time().'.'.$extension;
 
-            //Upload image
-            $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
+                //Upload image
+                $path = $file->storeAs('public/cover_images', $fileNameToStore);
+
+                $fileInfo[] = ['fileName' => $fileNameToStore, 'fileSize' => $fileSize];
+            }
         }else{
             $fileNameToStore = 'noimage.jpg';
         }
@@ -80,18 +85,19 @@ class ProjectsController extends Controller
         $project->title = $request->input('title');
         $project->text = $request->input('text');
         $project->user_id = auth()->user()->id;
-        $project->cover_image = $fileNameToStore;
 
         $project->save();
 
         //Create image
 
-        $image = new Image();
-        $image->project_id = $project->id;
-        $image->filename = $fileNameToStore;
-        $image->size = $fileSize;
+        foreach($fileInfo as $i){
+            $image = new Image();
+            $image->project_id = $project->id;
+            $image->filename = $i['fileName'];
+            $image->size = $i['fileSize'];
 
-        $image->save();
+            $image->save();
+        }
 
         return redirect('/projects')->with('succes', 'Project aangemaakt!');
     }
@@ -104,7 +110,7 @@ class ProjectsController extends Controller
      */
     public function show($id)
     {
-        $project = Project::find($id);
+        $project = Project::with('image')->find($id);
 
         return view('projects.show')->with('project', $project);
     }
@@ -130,6 +136,8 @@ class ProjectsController extends Controller
     /**
      * Update the specified resource in storage.
      *
+     * Todo Create more elegant image management system
+     *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -143,29 +151,53 @@ class ProjectsController extends Controller
 
         $project = Project::find($id);
 
-        //Handle file upload
-        if($request->hasFile('cover_image')){
-            //Delete old file
-            Storage::delete('public/cover_images/' . $project->cover_image);
-            //Get filename with extension
-            $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
-            //Get just filename
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            //Get just extension
-            $extension = $request->file('cover_image')->getClientOriginalExtension();
-            //Filename to store
-            $fileNameToStore = $filename.'_'.time().'.'.$extension;
+        $fileInfo = [];
 
-            //Upload image
-            $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
+        //Handle file upload
+        if($request->hasFile('images')){
+
+            //Delete all old files
+            foreach ($project->image as $image) {
+                Storage::delete('public/cover_images/' . $image->filename);
+
+                $image->delete();
+            }
+
+            $files = $request->file('images');
+            foreach ($files as $file){
+                //Get filesize
+                $fileSize = $file->getSize();
+                //Get filename with extension
+                $filenameWithExt = $file->getClientOriginalName();
+                //Get just filename
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                //Get just extension
+                $extension = $file->getClientOriginalExtension();
+                //Filename to store
+                $fileNameToStore = $filename.'_'.time().'.'.$extension;
+
+                //Upload image
+                $path = $file->storeAs('public/cover_images', $fileNameToStore);
+
+                $fileInfo[] = ['fileName' => $fileNameToStore, 'fileSize' => $fileSize];
+            }
         }
 
         $project->title = $request->input('title');
         $project->text = $request->input('text');
-        if($request->hasFile('cover_image')){
-            $project->cover_image = $fileNameToStore;
-        }
         $project->save();
+
+        if($request->hasFile('images')){
+            //Create image
+            foreach($fileInfo as $i){
+                $image = new Image();
+                $image->project_id = $project->id;
+                $image->filename = $i['fileName'];
+                $image->size = $i['fileSize'];
+
+                $image->save();
+            }
+        }
 
         return redirect('/projects')->with('succes', 'Project geupdate!');
     }

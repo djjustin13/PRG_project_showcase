@@ -4,7 +4,30 @@
     <br>
     <a href="/projects" class="btn btn-outline-dark">Back</a>
     <h1>{{$project->title}}</h1>
-    <img src="/storage/cover_images/{{$project->cover_image}}" style="width: 100%" alt="">
+    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            @foreach($project->image as $image)
+                @if ($loop->first)
+                    <div class="carousel-item active">
+                        <img class="d-block w-100" src="/storage/cover_images/{{$image->filename}}" alt="First slide">
+                    </div>
+                @else
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="/storage/cover_images/{{$image->filename}}" alt="First slide">
+                    </div>
+                @endif
+            @endforeach
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+    {{--<img src="/storage/cover_images/{{$project->cover_image}}" style="width: 100%" alt="">--}}
     <br><br>
     <div>
         {!! $project->text !!}
