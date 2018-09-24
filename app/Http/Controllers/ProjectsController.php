@@ -216,9 +216,10 @@ class ProjectsController extends Controller
             return redirect('/projects')->with('error', 'Geen toegang tot deze pagina');
         }
 
-        if($project->cover_image != 'noimage.jpg'){
-            //Delete image
-            Storage::delete('public/cover_images/'.$project->cover_image);
+        foreach ($project->image as $image) {
+            Storage::delete('public/cover_images/' . $image->filename);
+
+            $image->delete();
         }
 
         $project->delete();

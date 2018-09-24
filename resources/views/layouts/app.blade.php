@@ -10,7 +10,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script type="text/javascript" rel="script" src="{{asset('js/app.js')}}"></script>
+    <script>window.Laravel = { csrfToken: '{{ csrf_token() }}' }</script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -21,12 +21,14 @@
 </head>
 <body>
     <div id="app">
+        <rating-component></rating-component>
         @include('inc.navbar')
         <main class="py-4 container">
             @include('inc.messages')
             @yield('content')
         </main>
     </div>
+    <script type="text/javascript" rel="script" src="{{asset('js/app.js')}}"></script>
     <script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
     <script>
         CKEDITOR.replace( 'article-ckeditor' );
