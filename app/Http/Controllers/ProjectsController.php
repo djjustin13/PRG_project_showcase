@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Project;
@@ -25,7 +26,7 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        $projects = Project::orderBy('created_at', 'desc')->paginate(10);
+        $projects = Project::with('image')->orderBy('created_at', 'desc')->paginate(10);
         return view('projects/index')->with('projects', $projects);
     }
 
@@ -55,6 +56,8 @@ class ProjectsController extends Controller
 
         //Handle file upload
         if($request->hasFile('cover_image')){
+            //Get filesize
+            $fileSize = $request->file('cover_image')->getSize();
             //Get filename with extension
             $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
             //Get just filename
@@ -70,7 +73,7 @@ class ProjectsController extends Controller
             $fileNameToStore = 'noimage.jpg';
         }
 
-        //Create post
+        //Create project
 
         $project = new Project();
 
@@ -78,7 +81,17 @@ class ProjectsController extends Controller
         $project->text = $request->input('text');
         $project->user_id = auth()->user()->id;
         $project->cover_image = $fileNameToStore;
+
         $project->save();
+
+        //Create image
+
+        $image = new Image();
+        $image->project_id = $project->id;
+        $image->filename = $fileNameToStore;
+        $image->size = $fileSize;
+
+        $image->save();
 
         return redirect('/projects')->with('succes', 'Project aangemaakt!');
     }

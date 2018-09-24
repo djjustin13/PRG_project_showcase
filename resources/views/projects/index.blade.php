@@ -12,7 +12,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-12 text-center" style="height: 180px">
-                                <img src="/storage/cover_images/{{$project->cover_image}}" class="img-responsive" style=" height: auto ; max-width: 100%; max-height: 178px;" alt="">
+                                <img src="/storage/cover_images/{{ $project->image->first()['filename']  }}" class="img-responsive" style=" height: auto ; max-width: 100%; max-height: 178px;" alt="">
                             </div>
                             <div class="col-sm-12 ">
                                 <hr>

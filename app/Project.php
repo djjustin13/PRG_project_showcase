@@ -10,7 +10,7 @@ class Project extends Model
         return $this->belongsTo('App\User');
     }
 
-    public function images(){
+    public function image(){
         return $this->hasMany('App\Image');
     }
 }
