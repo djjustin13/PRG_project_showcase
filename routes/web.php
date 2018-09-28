@@ -14,6 +14,8 @@
 Route::get('/', 'PagesController@index');
 Route::get('/about', 'PagesController@about');
 
+Route::get('/projects/{project}/rate/{rating}', 'RatingController@create');
+
 Route::resource('projects', 'ProjectsController');
 
 Auth::routes();

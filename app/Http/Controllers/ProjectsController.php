@@ -26,7 +26,7 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        $projects = Project::with('image')->orderBy('created_at', 'desc')->paginate(10);
+        $projects = Project::with('images')->orderBy('created_at', 'desc')->paginate(10);
         return view('projects/index')->with('projects', $projects);
     }
 
@@ -110,7 +110,7 @@ class ProjectsController extends Controller
      */
     public function show($id)
     {
-        $project = Project::with('image')->find($id);
+        $project = Project::with('images')->find($id);
 
         return view('projects.show')->with('project', $project);
     }

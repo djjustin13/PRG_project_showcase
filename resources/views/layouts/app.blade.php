@@ -11,6 +11,10 @@
 
     <!-- Scripts -->
     <script>window.Laravel = { csrfToken: '{{ csrf_token() }}' }</script>
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -21,7 +25,6 @@
 </head>
 <body>
     <div id="app">
-        <rating-component></rating-component>
         @include('inc.navbar')
         <main class="py-4 container">
             @include('inc.messages')

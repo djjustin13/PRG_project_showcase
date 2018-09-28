@@ -6,7 +6,7 @@
     <h1>{{$project->title}}</h1>
     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
-            @foreach($project->image as $image)
+            @foreach($project->images as $image)
                 @if ($loop->first)
                     <div class="carousel-item active">
                         <img class="d-block w-100" src="/storage/cover_images/{{$image->filename}}" alt="First slide">
@@ -33,7 +33,6 @@
     </div>
     <small>Geplaats op {{$project->created_at}} door {{$project->user->name}}</small>
     @if(! Auth::guest())
-
         @if(Auth::user()->id == $project->user_id)
             <hr>
             <a href="/projects/{{$project->id}}/edit" class="btn btn-outline-dark">Bewerk</a>
@@ -42,6 +41,8 @@
                 @csrf
                 {{Form::submit('Verwijder', ['class' => 'btn btn-danger'])}}
             {!! Form::close() !!}
+        @else
+            <rating-component></rating-component>
         @endif
     @endif
 @endsection
