@@ -42,7 +42,7 @@
                 {{Form::submit('Verwijder', ['class' => 'btn btn-danger'])}}
             {!! Form::close() !!}
         @else
-            <rating-component></rating-component>
+            <rating-component project="{{$project->id}}"></rating-component>
         @endif
     @endif
 @endsection
