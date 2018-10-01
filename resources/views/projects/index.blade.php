@@ -17,6 +17,7 @@
                             <div class="col-sm-12 ">
                                 <hr>
                                 <h3>{{$project->title}}</h3>
+                                <p>Gemiddelede rating: {{$project->avgRating}}</p>
                                 <small>Geplaatst op {{$project->created_at}} door {{$project->user->name}}</small>
                             </div>
                         </div>
@@ -24,7 +25,7 @@
                     </div></a>
             </div>
             @endforeach
-             {{$projects->links()}}
+             {{--{{$projects->links()}}--}}
          @else
             <p class="col">Er zijn geen projecten...</p>
          @endif

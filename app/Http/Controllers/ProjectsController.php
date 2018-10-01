@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Rating;
 use App\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -26,8 +27,20 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        $projects = Project::with('images')->orderBy('created_at', 'desc')->paginate(10);
-        return view('projects/index')->with('projects', $projects);
+//        $projects = Project::with(['images', 'ratings'])->orderBy('projects.created_at', 'desc')->paginate(10);
+        $projects = Project::with(['images', 'ratings'])->get();
+
+        foreach ($projects as $project){
+            $avgRating = round(Rating::where('project_id', $project->id)->avg('rating'), 1);
+            $project->avgRating = $avgRating;
+            $newData[] = $project;
+        }
+
+//        return $newData;
+
+        $array = collect($newData)->sortBy('avgRating')->reverse();
+
+        return view('projects/index')->with('projects', $array);
     }
 
     /**
