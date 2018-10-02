@@ -27,20 +27,47 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-//        $projects = Project::with(['images', 'ratings'])->orderBy('projects.created_at', 'desc')->paginate(10);
-        $projects = Project::with(['images', 'ratings'])->get();
+        $projects = new Project();
+        $rateSort = false;
 
-        foreach ($projects as $project){
-            $avgRating = round(Rating::where('project_id', $project->id)->avg('rating'), 1);
-            $project->avgRating = $avgRating;
-            $newData[] = $project;
+        $projects = $projects->with(['images', 'ratings']);
+
+        //Check for sorting & filtering
+        if(request()->has('sort')){
+            if(request('sort') == 'rating'){
+                $rateSort = true;
+            }else{
+                $projects = $projects->orderBy(request('sort'),'desc');
+            }
         }
 
-//        return $newData;
+        $projects = $projects->paginate(12);
 
-        $array = collect($newData)->sortBy('avgRating')->reverse();
+        //Build query
 
-        return view('projects/index')->with('projects', $array);
+//        $projects = Project::with(['images', 'ratings'])->orderBy('projects.created_at', 'desc')->paginate(10);
+//        $projects = Project::with(['images', 'ratings'])->get();
+
+
+
+        if($rateSort){
+            $data = [];
+
+            //Add average rating to object
+            foreach ($projects as $project){
+                $avgRating = round(Rating::where('project_id', $project->id)->avg('rating'), 1);
+                $project->avgRating = $avgRating;
+                $data[] = $project;
+            }
+
+            $projects = collect($data);
+
+            $projects = $projects->sortBy('avgRating')->reverse();
+        }
+
+
+
+        return view('projects/index')->with('projects', $projects);
     }
 
     /**

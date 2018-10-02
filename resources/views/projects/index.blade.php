@@ -3,6 +3,7 @@
  @section('content')
      <div class="row">
          <h1 class="col">Projects</h1>
+         <p>Sorteer op: </p><a href="?sort=created_at">Datum</a> | <a href="?sort=rating">Rating</a>
      </div>
      <div class="row">
          @if(count($projects) > 0)
@@ -25,7 +26,7 @@
                     </div></a>
             </div>
             @endforeach
-             {{--{{$projects->links()}}--}}
+             @if (is_array($projects)) {{$projects->links()}} @endif
          @else
             <p class="col">Er zijn geen projecten...</p>
          @endif
