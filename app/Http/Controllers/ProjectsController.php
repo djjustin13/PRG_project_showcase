@@ -39,31 +39,22 @@ class ProjectsController extends Controller
             }else{
                 $projects = $projects->orderBy(request('sort'),'desc');
             }
+        }else{
+            $projects = $projects->orderBy('created_at','desc');
         }
 
-        $projects = $projects->paginate(12);
+        $projects = $projects->get();
 
-        //Build query
-
-//        $projects = Project::with(['images', 'ratings'])->orderBy('projects.created_at', 'desc')->paginate(10);
-//        $projects = Project::with(['images', 'ratings'])->get();
-
-
-
-        if($rateSort){
-            $data = [];
-
-            //Add average rating to object
-            foreach ($projects as $project){
-                $avgRating = round(Rating::where('project_id', $project->id)->avg('rating'), 1);
-                $project->avgRating = $avgRating;
-                $data[] = $project;
-            }
-
-            $projects = collect($data);
-
-            $projects = $projects->sortBy('avgRating')->reverse();
+        //Add average rating to object
+        foreach ($projects as $project){
+            $avgRating = round(Rating::where('project_id', $project->id)->avg('rating'), 1);
+            $project->avgRating = $avgRating;
+            $data[] = $project;
         }
+
+        $projects = collect($data);
+
+        if($rateSort)$projects = $projects->sortBy('avgRating')->reverse();
 
 
 

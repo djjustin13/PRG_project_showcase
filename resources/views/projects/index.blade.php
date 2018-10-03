@@ -26,7 +26,6 @@
                     </div></a>
             </div>
             @endforeach
-             @if (is_array($projects)) {{$projects->links()}} @endif
          @else
             <p class="col">Er zijn geen projecten...</p>
          @endif
