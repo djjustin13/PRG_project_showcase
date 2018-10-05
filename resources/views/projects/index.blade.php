@@ -2,8 +2,20 @@
 
  @section('content')
      <div class="row">
-         <h1 class="col">Projects</h1>
-         <p>Sorteer op: </p><a href="?sort=created_at">Datum</a> | <a href="?sort=rating">Rating</a>
+         <h1 class="col-md-3">Projects</h1>
+         <div class="col-md-6">
+             {!! Form::open(['action' => 'ProjectsController@index', 'method' => 'GET']) !!}
+             <div class="form-group input-group">
+                 {{Form::text('search', '', ['class' => 'form-control', 'placeholder' => 'Zoeken..'])}}
+                 {{Form::button('<i class="fas fa-search"></i>', ['type' => 'submit','class' => 'btn btn-outline-dark'])}}
+             </div>
+             @csrf
+
+             {!! Form::close() !!}
+         </div>
+         <div class="col-md-3">
+             <span>Sorteer op: </span><a href="?sort=created_at">Datum</a> | <a href="?sort=rating">Rating</a>
+         </div>
      </div>
      <div class="row">
          @if(count($projects) > 0)

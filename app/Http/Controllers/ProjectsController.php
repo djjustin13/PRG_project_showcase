@@ -25,19 +25,23 @@ class ProjectsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $projects = new Project();
         $rateSort = false;
 
         $projects = $projects->with(['images', 'ratings']);
 
+        if($request->has('search')){
+            $projects = $projects->search($request->get('search'));
+        }
+
         //Check for sorting & filtering
-        if(request()->has('sort')){
-            if(request('sort') == 'rating'){
+        if($request->has('sort')){
+            if($request->get('sort') == 'rating'){
                 $rateSort = true;
             }else{
-                $projects = $projects->orderBy(request('sort'),'desc');
+                $projects = $projects->orderBy($request->get('sort'),'desc');
             }
         }else{
             $projects = $projects->orderBy('created_at','desc');

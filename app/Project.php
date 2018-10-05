@@ -17,4 +17,10 @@ class Project extends Model
     public function ratings(){
         return $this->hasMany('App\Rating');
     }
+
+    public static function scopeSearch($query, $searchTerm)
+    {
+        return $query->where('title', 'like', '%' .$searchTerm. '%')
+            ->orWhere('text', 'like', '%' .$searchTerm. '%');
+    }
 }
