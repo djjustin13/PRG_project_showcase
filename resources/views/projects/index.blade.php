@@ -14,7 +14,7 @@
              {!! Form::close() !!}
          </div>
          <div class="col-md-3">
-             <span>Sorteer op: </span><a href="?sort=created_at">Datum</a> | <a href="?sort=rating">Rating</a>
+             <span>Sorteer op: </span><a href="#" onclick="sort(event,'created_at')">Datum</a> | <a href="#" onclick="sort(event,'rating')">Rating</a>
          </div>
      </div>
      <div class="row">

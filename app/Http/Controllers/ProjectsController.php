@@ -49,6 +49,7 @@ class ProjectsController extends Controller
 
         $projects = $projects->get();
 
+        $data = [];
         //Add average rating to object
         foreach ($projects as $project){
             $avgRating = round(Rating::where('project_id', $project->id)->avg('rating'), 1);
