@@ -34,3 +34,14 @@ html, body{
 
   }
 }
+
+.categories{
+    margin-top: 10px;
+
+  .project-category{
+    border: 1px solid $dark;
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin-right: 10px;
+  }
+}

@@ -14,6 +14,10 @@
                 {{Form::label('text', 'Text')}}
                 {{Form::textarea('text', '', ['id' => 'article-ckeditor','class' => 'form-control', 'placeholder' => 'text'])}}
             </div>
+            <div class="form-group">
+                {{Form::label('categories[]', 'Categorieën')}}
+                {{ Form::select('categories[]', $categories, null, ['class' => 'form-control', 'multiple' => 'multiple']) }}
+            </div>
             <div class="input-group form-group">
                 <label class="input-group-btn">
                         <span class="btn btn-secondary btn-file">

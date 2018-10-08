@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Rating;
 use App\Image;
 use Illuminate\Http\Request;
@@ -37,6 +38,10 @@ class ProjectsController extends Controller
         }
 
         //Check for sorting & filtering
+        if($request->has('filter')){
+
+        }
+
         if($request->has('sort')){
             if($request->get('sort') == 'rating'){
                 $rateSort = true;
@@ -73,7 +78,9 @@ class ProjectsController extends Controller
      */
     public function create()
     {
-        return view('projects.create');
+        $categories = Category::pluck('name', 'id');
+
+        return view('projects.create')->with('categories', $categories);
     }
 
     /**
@@ -87,8 +94,10 @@ class ProjectsController extends Controller
         $this->validate($request, [
             'title' => 'required',
             'text' => 'required',
-            'images' => 'required|image|nullable|max:1999'
+
         ]);
+
+//        'images' => 'required|image|nullable|max:1999'
 
         //Handle file upload
         if($request->hasFile('images')){
@@ -123,6 +132,10 @@ class ProjectsController extends Controller
         $project->user_id = auth()->user()->id;
 
         $project->save();
+        foreach ($request->input('categories') as $catId){
+            $project->categories()->attach($catId);
+        }
+
 
         //Create image
 
@@ -146,7 +159,7 @@ class ProjectsController extends Controller
      */
     public function show($id)
     {
-        $project = Project::with('images')->find($id);
+        $project = Project::with(['images', 'categories'])->find($id);
 
         return view('projects.show')->with('project', $project);
     }
@@ -252,7 +265,7 @@ class ProjectsController extends Controller
             return redirect('/projects')->with('error', 'Geen toegang tot deze pagina');
         }
 
-        foreach ($project->image as $image) {
+        foreach ($project->images as $image) {
             Storage::delete('public/cover_images/' . $image->filename);
 
             $image->delete();

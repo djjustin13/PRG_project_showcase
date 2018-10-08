@@ -18,6 +18,10 @@ class Project extends Model
         return $this->hasMany('App\Rating');
     }
 
+    public function categories(){
+        return $this->belongsToMany('App\Category');
+    }
+
     public static function scopeSearch($query, $searchTerm)
     {
         return $query->where('title', 'like', '%' .$searchTerm. '%')

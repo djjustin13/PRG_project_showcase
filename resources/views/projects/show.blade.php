@@ -32,6 +32,11 @@
         {!! $project->text !!}
     </div>
     <small>Geplaats op {{$project->created_at}} door {{$project->user->name}}</small>
+    <div class="categories">
+        @foreach($project->categories as $cat)
+            <span class="project-category">{{$cat->name}}</span>
+        @endforeach
+    </div>
     @if(! Auth::guest())
         @if(Auth::user()->id == $project->user_id)
             <hr>
