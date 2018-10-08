@@ -87,7 +87,7 @@ class ProjectsController extends Controller
         $this->validate($request, [
             'title' => 'required',
             'text' => 'required',
-            'cover_image' => 'image|nullable|max:1999'
+            'images' => 'required|image|nullable|max:1999'
         ]);
 
         //Handle file upload

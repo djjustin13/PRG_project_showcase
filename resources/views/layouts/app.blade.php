@@ -32,19 +32,8 @@
             @yield('content')
         </main>
     </div>
-    <script type="text/javascript" rel="script" src="{{asset('js/app.js')}}"></script>
     <script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
-    <script>
-        CKEDITOR.replace( 'article-ckeditor' );
-        function sort(e, s) {e.preventDefault();
-            var url = window.location.href;
-            var arr = url.split('?');
-            if (arr.length > 1 && arr[1] !== '') {
-                window.location.href += "&sort="+s;
-            }else {
-                window.location.href += "?sort="+s;
-            }
-            return false; };
-    </script>
+    {{Html::script('js/app.js')}}
+    {{Html::script('js/scripts.js')}}
 </body>
 </html>

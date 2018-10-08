@@ -17,12 +17,11 @@
             <div class="input-group form-group">
                 <label class="input-group-btn">
                         <span class="btn btn-secondary btn-file">
-                            Upload afbeelding {{Form::file('images[]', ['multiple'=> true])}}
+                            Upload afbeeldingen {{Form::file('images[]', ['id' => 'input-id','multiple'=> true])}}
                         </span>
                 </label>
-                <input type="text" class="form-control" readonly>
+                <input id="file-display" type="text" class="form-control" readonly>
             </div>
-
         @csrf
         {{Form::submit('Voeg project toe', ['class' => 'btn btn-primary'])}}
         {!! Form::close() !!}
