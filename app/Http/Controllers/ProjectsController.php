@@ -33,17 +33,20 @@ class ProjectsController extends Controller
 
         $projects = $projects->with(['images', 'ratings']);
 
+        //Check search
         if($request->has('search')){
             $projects = $projects->search($request->get('search'));
         }
 
-        //Check for sorting & filtering
+        //Check for sorting
         if($request->has('category') && $request->get('category') != 1){
 
-            $projects = $projects->join('category_project', 'projects.id', '=', 'category_project.project_id')->where('category_project.category_id', '=', $request->get('category'));
+            $projects = $projects->join('category_project', 'projects.id', '=', 'category_project.project_id')
+                ->where('category_project.category_id', '=', $request->get('category'));
 
         }
 
+        //Check for filtering
         if($request->has('sort')){
             if($request->get('sort') == 'rating'){
                 $rateSort = true;
@@ -54,6 +57,7 @@ class ProjectsController extends Controller
             $projects = $projects->orderBy('created_at','desc');
         }
 
+        //Run query
         $projects = $projects->get();
 
         $data = [];
@@ -263,7 +267,7 @@ class ProjectsController extends Controller
     {
         $project = Project::find($id);
         //Check for correct user
-        if(auth()->user()->id !== $project->user_id){
+        if(auth()->user()->id !== $project->user_id && auth()->user()->role == 0){
             return redirect('/projects')->with('error', 'Geen toegang tot deze pagina');
         }
 
@@ -275,8 +279,6 @@ class ProjectsController extends Controller
 
         $project->delete();
 
-        //Cleaner way
-//        Project::destroy($id);
         return redirect('/projects')->with('succes', 'Project verwijderd!');
     }
 }

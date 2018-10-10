@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Project;
 use Illuminate\Http\Request;
 use App\User;
 
@@ -26,6 +27,13 @@ class DashboardController extends Controller
     {
         $user_id = auth()->user()->id;
         $user = User::find($user_id);
-        return view('dashboard')->with('projects', $user->projects);
+
+        if($user->role == 1){
+            $projects = Project::all();
+
+            return view('admin-dashboard')->with('projects', $projects);
+        }else{
+            return view('dashboard')->with('projects', $user->projects);
+        }
     }
 }

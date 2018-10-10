@@ -7,21 +7,19 @@
             <div class="card">
                 <div class="card-header">Dashboard</div>
                 <div class="card-body">
-                    <a href="/projects/create" class="btn btn-primary"> Maak nieuw project</a>
-                    <hr>
-                    <h3>Jouw projecten:</h3>
+                    <h3>Alle projecten:</h3>
                     @if(count($projects) > 0)
                     <table class="table table-striped">
                         <tr>
                             <th>Titel</th>
-                            <th></th>
+                            <th>Gebruiker</th>
                             <th></th>
                         </tr>
                         <tr>
                             @foreach($projects as $project)
                                 <tr>
                                     <td><a href="/projects/{{$project->id}}">{{$project->title}}</a></td>
-                                    <td><a href="/projects/{{$project->id}}/edit" class="btn btn-outline-dark float-right">Bewerk</a></td>
+                                    <td>{{$project->user->name}}</td>
                                     <td>
                                         {!! Form::open(['action' => ['ProjectsController@destroy', $project->id], 'method' => 'POST']) !!}
                                         @method('DELETE')
