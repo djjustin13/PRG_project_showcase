@@ -1,22 +1,22 @@
  @extends('layouts.app')
 
  @section('content')
+     {!! Form::open(['action' => 'ProjectsController@index', 'method' => 'GET']) !!}
      <div class="row">
          <h1 class="col-md-3">Projects</h1>
          <div class="col-md-6">
-             {!! Form::open(['action' => 'ProjectsController@index', 'method' => 'GET']) !!}
              <div class="form-group input-group">
-                 {{Form::text('search', '', ['class' => 'form-control', 'placeholder' => 'Zoeken..'])}}
+                 {{Form::text('search', '', ['class' => 'form-control', 'placeholder' => 'Zoeken..', 'style' => 'width: 45%'])}}
+                 {{Form::select('category', $categories, null, ['class' => 'form-control']) }}
                  {{Form::button('<i class="fas fa-search"></i>', ['type' => 'submit','class' => 'btn btn-outline-dark'])}}
              </div>
-             @csrf
-
-             {!! Form::close() !!}
          </div>
          <div class="col-md-3">
              <span>Sorteer op: </span><a href="#" onclick="sort(event,'created_at')">Datum</a> | <a href="#" onclick="sort(event,'rating')">Rating</a>
          </div>
      </div>
+     @csrf
+     {!! Form::close() !!}
      <div class="row">
          @if(count($projects) > 0)
             @foreach($projects as $project)

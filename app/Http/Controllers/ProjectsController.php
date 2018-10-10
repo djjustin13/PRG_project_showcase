@@ -12,9 +12,8 @@ use App\Project;
 class ProjectsController extends Controller
 {
     /**
-     * Create a new controller instance.
+     * ProjectsController constructor.
      *
-     * @return void
      */
     public function __construct()
     {
@@ -22,8 +21,9 @@ class ProjectsController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of resource
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -38,7 +38,9 @@ class ProjectsController extends Controller
         }
 
         //Check for sorting & filtering
-        if($request->has('filter')){
+        if($request->has('category') && $request->get('category') != 1){
+
+            $projects = $projects->join('category_project', 'projects.id', '=', 'category_project.project_id')->where('category_project.category_id', '=', $request->get('category'));
 
         }
 
@@ -66,9 +68,9 @@ class ProjectsController extends Controller
 
         if($rateSort)$projects = $projects->sortBy('avgRating')->reverse();
 
+        $categories = Category::pluck('name', 'id');
 
-
-        return view('projects/index')->with('projects', $projects);
+        return view('projects/index')->with(compact('projects','categories'));
     }
 
     /**
