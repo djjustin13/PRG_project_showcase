@@ -19,6 +19,7 @@ Route::get('/projects/{project}/rate', 'RatingController@get');
 Route::get('/projects/{project}/rate/{rating}', 'RatingController@create');
 
 Route::resource('projects', 'ProjectsController');
+Route::put('projects/changeState/{id}', 'ProjectsController@changeState');
 
 Auth::routes();
 

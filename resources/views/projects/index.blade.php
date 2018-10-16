@@ -15,7 +15,6 @@
              <span>Sorteer op: </span><a href="#" onclick="sort(event,'created_at')">Datum</a> | <a href="#" onclick="sort(event,'rating')">Rating</a>
          </div>
      </div>
-     @csrf
      {!! Form::close() !!}
      <div class="row">
          @if(count($projects) > 0)

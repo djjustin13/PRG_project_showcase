@@ -31,7 +31,7 @@ class ProjectsController extends Controller
         $projects = new Project();
         $rateSort = false;
 
-        $projects = $projects->with(['images', 'ratings']);
+        $projects = $projects->with(['images', 'ratings'])->where('active', '=', '1');
 
         //Check search
         if($request->has('search')){
@@ -135,6 +135,7 @@ class ProjectsController extends Controller
 
         $project->title = $request->input('title');
         $project->text = $request->input('text');
+        $project->active = 1;
         $project->user_id = auth()->user()->id;
 
         $project->save();
@@ -255,6 +256,21 @@ class ProjectsController extends Controller
         }
 
         return redirect('/projects')->with('succes', 'Project geupdate!');
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+
+    public function changeState(Request $request, $id){
+        $project = Project::find($id);
+
+        $project->active =  $request->input('state') ? 0:1;
+        $project->save();
+
+
+        return redirect('/dashboard')->with('succes', 'Project geupdate!');
     }
 
     /**

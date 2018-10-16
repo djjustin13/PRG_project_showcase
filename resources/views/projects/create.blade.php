@@ -26,7 +26,6 @@
                 </label>
                 <input id="file-display" type="text" class="form-control" readonly>
             </div>
-        @csrf
         {{Form::submit('Voeg project toe', ['class' => 'btn btn-primary'])}}
         {!! Form::close() !!}
     </div>

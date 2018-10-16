@@ -23,7 +23,6 @@
                                     <td>
                                         {!! Form::open(['action' => ['ProjectsController@destroy', $project->id], 'method' => 'POST']) !!}
                                         @method('DELETE')
-                                        @csrf
                                         {{Form::submit('Verwijder', ['class' => 'btn btn-danger float-right'])}}
                                         {!! Form::close() !!}
                                     </td>

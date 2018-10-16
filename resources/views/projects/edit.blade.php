@@ -23,7 +23,6 @@
                 <input type="text" class="form-control" readonly>
             </div>
         @method('PUT')
-        @csrf
         {{Form::submit('Submit', ['class' => 'btn btn-primary'])}}
         {!! Form::close() !!}
     </div>
