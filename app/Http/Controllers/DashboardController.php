@@ -31,9 +31,9 @@ class DashboardController extends Controller
         if($user->role == 1){
             $projects = Project::all();
 
-            return view('admin-dashboard')->with('projects', $projects);
+            return view('dashboard.admin')->with('projects', $projects);
         }else{
-            return view('dashboard')->with('projects', $user->projects);
+            return view('dashboard.index')->with('projects', $user->projects);
         }
     }
 }

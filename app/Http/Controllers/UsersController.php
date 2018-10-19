@@ -26,7 +26,11 @@ class UsersController extends Controller
     {
         $users = User::all();
 
-        return view('users')->with('users', $users);
+        if(auth()->user()->role != 1){
+            return redirect('/dashboard')->with('error', 'Je kunt deze pagina niet bekijken..');
+        }
+
+        return view('dashboard.users')->with('users', $users);
     }
 
     /**

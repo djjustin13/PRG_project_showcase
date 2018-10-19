@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Rating;
 use App\Image;
+use App\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Project;
+use Illuminate\Support\Facades\DB;
 
 class ProjectsController extends Controller
 {
@@ -29,9 +30,9 @@ class ProjectsController extends Controller
     public function index(Request $request)
     {
         $projects = new Project();
-        $rateSort = false;
 
-        $projects = $projects->with(['images', 'ratings'])->where('active', '=', '1');
+        $projects = $projects->rating()->with(['images', 'ratings'])->where('active', '=', '1');
+
 
         //Check search
         if($request->has('search')){
@@ -49,7 +50,7 @@ class ProjectsController extends Controller
         //Check for filtering
         if($request->has('sort')){
             if($request->get('sort') == 'rating'){
-                $rateSort = true;
+                $projects = $projects->orderBy('avgRating','desc');
             }else{
                 $projects = $projects->orderBy($request->get('sort'),'desc');
             }
@@ -58,19 +59,7 @@ class ProjectsController extends Controller
         }
 
         //Run query
-        $projects = $projects->get();
-
-        $data = [];
-        //Add average rating to object
-        foreach ($projects as $project){
-            $avgRating = round(Rating::where('project_id', $project->id)->avg('rating'), 1);
-            $project->avgRating = $avgRating;
-            $data[] = $project;
-        }
-
-        $projects = collect($data);
-
-        if($rateSort)$projects = $projects->sortBy('avgRating')->reverse();
+        $projects = $projects->paginate(12);
 
         $categories = Category::pluck('name', 'id');
 
@@ -100,7 +89,8 @@ class ProjectsController extends Controller
         $this->validate($request, [
             'title' => 'required',
             'text' => 'required',
-
+            'images' => 'required',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
 //        'images' => 'required|image|nullable|max:1999'
@@ -180,13 +170,14 @@ class ProjectsController extends Controller
     public function edit($id)
     {
         $project = Project::find($id);
+        $categories = Category::pluck('name', 'id');
 
         //Check for correct user
         if(auth()->user()->id !== $project->user_id){
             return redirect('/projects')->with('error', 'Geen toegang tot deze pagina');
         }
 
-        return view('projects.edit')->with('project', $project);
+        return view('projects.edit')->with(compact('project', 'categories'));
     }
 
     /**
@@ -202,7 +193,9 @@ class ProjectsController extends Controller
     {
         $this->validate($request, [
             'title' => 'required',
-            'text' => 'required'
+            'text' => 'required',
+            'images' => 'required',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
         $project = Project::find($id);
@@ -242,6 +235,13 @@ class ProjectsController extends Controller
         $project->title = $request->input('title');
         $project->text = $request->input('text');
         $project->save();
+
+        DB::table('category_project')->where('project_id', '=', $project->id)->delete();
+
+        foreach ($request->input('categories') as $catId){
+            $project->categories()->attach($catId);
+        }
+
 
         if($request->hasFile('images')){
             //Create image

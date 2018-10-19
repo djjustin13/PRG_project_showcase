@@ -13,24 +13,15 @@ class RatingController extends Controller
     }
 
     public function create($project, $number){
+        $check = Rating::where(['project_id' => $project, 'user_id' => auth()->user()->id])->count();
 
-        $request = new Request([
-            'userid' => auth()->user()->id
-        ]);
-
-        $validator = Validator::make($request->all(), [
-            'userid' => 'unique:ratings,user_id'
-        ]);
-
-        if($validator->fails()){
-            $messages = $validator->messages();
+        if($check > 0){
             return 'Je kunt maar 1 rating geven!';
-
         }else{
             $rating = new Rating();
             $rating->rating = $number;
             $rating->project_id = $project;
-            $rating->user_id = $request->userid;
+            $rating->user_id = auth()->user()->id;
 
             $rating->save();
 

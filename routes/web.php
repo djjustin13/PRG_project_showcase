@@ -21,9 +21,12 @@ Route::get('/projects/{project}/rate/{rating}', 'RatingController@create');
 Route::resource('projects', 'ProjectsController');
 Route::put('projects/changeState/{id}', 'ProjectsController@changeState');
 
-Auth::routes();
-
 Route::get('/dashboard', 'DashboardController@index');
+Route::get('/dashboard/categories', 'CategoriesController@index');
+Route::post('/dashboard/categories/store', 'CategoriesController@store');
+Route::delete('/dashboard/categories/delete/{id}', 'CategoriesController@destroy');
 
-Route::resource('users', 'UsersController');
 
+Route::resource('/dashboard/users', 'UsersController');
+
+Auth::routes();

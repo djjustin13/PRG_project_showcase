@@ -22,6 +22,10 @@ class Project extends Model
         return $this->belongsToMany('App\Category');
     }
 
+    public static function scopeRating($query){
+       return $query->selectRaw('projects.* ,(SELECT AVG(ratings.rating) FROM ratings WHERE ratings.project_id = projects.id) avgRating');
+    }
+
     public static function scopeSearch($query, $searchTerm)
     {
         return $query->where('title', 'like', '%' .$searchTerm. '%')

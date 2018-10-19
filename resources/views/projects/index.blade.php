@@ -24,12 +24,12 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-12 text-center" style="height: 180px">
-                                <img src="/storage/cover_images/{{ $project->images->first()['filename']  }}" class="img-responsive" style=" height: auto ; max-width: 100%; max-height: 178px;" alt="">
+                                <img src="/storage/cover_images/{{ $project->images->first()['filename'] }}" class="img-responsive" style=" height: auto ; max-width: 100%; max-height: 178px;" alt="">
                             </div>
-                            <div class="col-sm-12 ">
+                            <div class="col-sm-12">
                                 <hr>
                                 <h3>{{$project->title}}</h3>
-                                <p>Gemiddelede rating: {{$project->avgRating}}</p>
+                                <p>Gemiddelede rating: {{ ($project->avgRating != null ? $project->avgRating: 'geen') }}</p>
                                 <small>Geplaatst op {{$project->created_at}} door {{$project->user->name}}</small>
                             </div>
                         </div>
@@ -41,4 +41,8 @@
             <p class="col">Er zijn geen projecten...</p>
          @endif
      </div>
+     <div class="row justify-content-md-center">
+         {{ $projects->links()  }}
+     </div>
+
  @endsection
