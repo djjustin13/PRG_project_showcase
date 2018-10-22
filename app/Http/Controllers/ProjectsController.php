@@ -31,7 +31,7 @@ class ProjectsController extends Controller
     {
         $projects = new Project();
 
-        $projects = $projects->rating()->with(['images', 'ratings'])->where('active', '=', '1');
+        $projects = $projects->rating()->with('images')->where('active', '=', '1');
 
 
         //Check search
