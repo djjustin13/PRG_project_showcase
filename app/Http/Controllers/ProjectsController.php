@@ -63,7 +63,7 @@ class ProjectsController extends Controller
 
         $categories = Category::pluck('name', 'id');
 
-        return view('projects/index')->with(compact('projects','categories'));
+        return view('projects.index')->with(compact('projects','categories'));
     }
 
     /**
