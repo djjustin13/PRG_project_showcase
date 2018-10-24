@@ -124,7 +124,7 @@ class ProjectsController extends Controller
         $project = new Project();
 
         $project->title = $request->input('title');
-        $project->text = $request->input('text');
+        $project->text = scriptStripper($request->input('text'));
         $project->active = 1;
         $project->user_id = auth()->user()->id;
 
@@ -194,7 +194,6 @@ class ProjectsController extends Controller
         $this->validate($request, [
             'title' => 'required',
             'text' => 'required',
-            'images' => 'required',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
@@ -206,7 +205,7 @@ class ProjectsController extends Controller
         if($request->hasFile('images')){
 
             //Delete all old files
-            foreach ($project->image as $image) {
+            foreach ($project->images as $image) {
                 Storage::delete('public/cover_images/' . $image->filename);
 
                 $image->delete();
@@ -233,7 +232,7 @@ class ProjectsController extends Controller
         }
 
         $project->title = $request->input('title');
-        $project->text = $request->input('text');
+        $project->text = scriptStripper($request->input('text'));
         $project->save();
 
         DB::table('category_project')->where('project_id', '=', $project->id)->delete();
