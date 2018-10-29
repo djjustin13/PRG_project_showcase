@@ -30,19 +30,32 @@ class UsersController extends Controller
             return redirect('/dashboard')->with('error', 'Je kunt deze pagina niet bekijken..');
         }
 
-        return view('dashboard.users')->with('users', $users);
+        return view('dashboard.users.index')->with('users', $users);
     }
 
     /**
-     * Display the specified resource.
+     * Show the form for editing the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function edit()
     {
-        //
+        $user = auth()->user();
+        return view('dashboard.users.edit')->with('user', $user);
     }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request)
+    {
+    //
+
+    }
+
 
     /**
      * Remove the specified resource from storage.
