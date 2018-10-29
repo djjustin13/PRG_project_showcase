@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Message;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
 
 class UsersController extends Controller
 {
@@ -52,8 +55,22 @@ class UsersController extends Controller
      */
     public function update(Request $request)
     {
-    //
+        $user = auth()->user();
 
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->save();
+
+
+        return redirect('/dashboard/profile')->with('succes', 'Profiel aangepast.');
+    }
+
+    public function changePassword(){
+        Password::sendResetLink(['email' => Auth::user()->email], function (Mail $message) {
+            $message->subject('Your Password Reset Link');
+        });
+
+        return redirect('/dashboard/profile')->with('succes', 'Email met reset link is verstuurd.');
     }
 
 

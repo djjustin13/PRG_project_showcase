@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Validator;
 
 class RatingController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => 'get']);
+    }
+
     public function get($project){
         return round(Rating::where('project_id', $project)->avg('rating'), 1);
     }

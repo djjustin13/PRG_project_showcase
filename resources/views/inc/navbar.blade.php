@@ -35,7 +35,10 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="/dashboard">Dashboard</a>
+                                <a class="dropdown-item" href="/dashboard">Projecten</a>
+
+                                <a class="dropdown-item" href="/dashboard/profile">Profiel</a>
+
                                 @if(Auth::user()->role == 1)
                                     <a class="dropdown-item" href="/dashboard/users">Users</a>
                                 @endif

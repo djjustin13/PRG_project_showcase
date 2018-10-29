@@ -28,5 +28,7 @@ Route::delete('/dashboard/categories/delete/{id}', 'CategoriesController@destroy
 
 
 Route::resource('/dashboard/users', 'UsersController');
+Route::get('/dashboard/profile', 'UsersController@edit');
+Route::get('/dashboard/profile/resetpassword', 'UsersController@changePassword');
 
 Auth::routes();
