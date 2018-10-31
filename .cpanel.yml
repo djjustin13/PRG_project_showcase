@@ -2,4 +2,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/justin1q/laravel.justinderuiter.nl/
-    - cp -r * $DEPLOYPATH
+    - cp -r */ $DEPLOYPATH
