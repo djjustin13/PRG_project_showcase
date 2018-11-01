@@ -173,7 +173,7 @@ class ProjectsController extends Controller
         $categories = Category::pluck('name', 'id');
 
         //Check for correct user
-        if(auth()->user()->id !== $project->user_id){
+        if(auth()->user()->id != $project->user_id){
             return redirect('/projects')->with('error', 'Geen toegang tot deze pagina');
         }
 
