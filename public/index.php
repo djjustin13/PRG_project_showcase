@@ -9,6 +9,9 @@
 
 define('LARAVEL_START', microtime(true));
 
+//Temporary server fix
+ini_set("precision", 14);
+
 /*
 |--------------------------------------------------------------------------
 | Register The Auto Loader
