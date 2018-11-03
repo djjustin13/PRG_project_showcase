@@ -35,12 +35,11 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="/dashboard">Projecten</a>
-
                                 <a class="dropdown-item" href="/dashboard/profile">Profiel</a>
-
+                                <a class="dropdown-item" href="/dashboard">Projecten</a>
                                 @if(Auth::user()->role == 1)
-                                    <a class="dropdown-item" href="/dashboard/users">Users</a>
+                                    <a class="dropdown-item" href="/dashboard/users">Gebruikers</a>
+                                    <a class="dropdown-item" href="/dashboard/categories">Categorieën</a>
                                 @endif
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
