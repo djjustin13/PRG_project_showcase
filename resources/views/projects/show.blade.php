@@ -40,6 +40,7 @@
     <br>
     @if(! Auth::guest())
         @if(Auth::user()->id == $project->user_id)
+            <p>Rating: {{ $rating  }}</p>
             <hr>
             <a href="/projects/{{$project->id}}/edit" class="btn btn-outline-dark">Bewerk</a>
             {!! Form::open(['action' => ['ProjectsController@destroy', $project->id], 'method' => 'POST']) !!}
