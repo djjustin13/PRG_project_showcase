@@ -29,7 +29,7 @@
                             <div class="col-sm-12">
                                 <hr>
                                 <h3>{{$project->title}}</h3>
-                                <p>Gemiddelede rating: {{ ($project->avgRating != null ? $project->avgRating: 'geen') }}</p>
+                                <p>Gemiddelede rating: {{ (round($project->avgRating,1 ) != null ? $project->avgRating: 'geen') }}</p>
                                 <small>Geplaatst op {{$project->created_at}} door {{$project->user->name}}</small>
                             </div>
                         </div>
