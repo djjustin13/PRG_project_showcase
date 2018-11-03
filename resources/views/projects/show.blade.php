@@ -37,6 +37,7 @@
             <span class="project-category">{{$cat->name}}</span>
         @endforeach
     </div>
+    <br>
     @if(! Auth::guest())
         @if(Auth::user()->id == $project->user_id)
             <hr>
@@ -48,5 +49,7 @@
         @else
             <rating-component project="{{$project->id}}"></rating-component>
         @endif
+    @else
+        <p>Rating: {{ $rating  }}</p>
     @endif
 @endsection

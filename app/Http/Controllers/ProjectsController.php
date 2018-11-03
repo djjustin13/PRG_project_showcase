@@ -158,7 +158,9 @@ class ProjectsController extends Controller
     {
         $project = Project::with(['images', 'categories'])->find($id);
 
-        return view('projects.show')->with('project', $project);
+        $rating = round(Rating::where('project_id', $project)->avg('rating'), 1);
+
+        return view('projects.show')->with(compact('project', 'rating'));
     }
 
     /**
